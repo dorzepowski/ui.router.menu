@@ -1,0 +1,20 @@
+{
+  "name": "ui-router-menu-extension",
+  "version": "0.0.1",
+  "description": "Extension to ui.router to help prepare menu from states",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angular",
+    "ui.router",
+    "menu",
+    "state",
+    "$state"
+  ],
+  "author": "Damian Orzepowski",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "3.9.1"
+  }
+}
