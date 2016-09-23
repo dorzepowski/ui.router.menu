@@ -16,6 +16,7 @@ const babel = require('gulp-babel');
 const del = require('del');
 const watch = require('gulp-watch');
 const print = require('gulp-print');
+const strip = require('gulp-strip-comments');
 
 gulp.task('clean', function () {
     return del([conf.dest], {dot: true});
@@ -24,6 +25,7 @@ gulp.task('clean', function () {
 gulp.task("build:dev", function(){
    return gulp.src(conf.jsSrc())
        .pipe(concat(conf.jsDevFile()))
+       .pipe(strip())
        .pipe(gulp.dest(conf.dest));
 });
 

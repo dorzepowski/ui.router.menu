@@ -18,7 +18,8 @@
     "del": "2.2.2",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.0",
-    "gulp-print": "^2.0.1",
-    "gulp-watch": "^4.3.9"
+    "gulp-print": "2.0.1",
+    "gulp-strip-comments": "2.4.3",
+    "gulp-watch": "4.3.9"
   }
 }
