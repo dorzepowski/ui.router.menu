@@ -1,9 +1,7 @@
 angular.module('ui.router.menu', ["ui.router"])
     .provider("routerMenuProvider", [function () {
-        var emitMainRegistered = null;
-        var promiseMainSet = new Promise(function (resolve) {
-            emitMainRegistered = resolve;
-        });
+        var mainSetEvent = new MainSetEvent();
+        var emitMainRegistered = mainSetEvent.fire;
 
 
         var $this = this;
@@ -29,7 +27,7 @@ angular.module('ui.router.menu', ["ui.router"])
         }
 
         function whenMainSet() {
-            return promiseMainSet;
+            return mainSetEvent;
         }
 
 
@@ -39,5 +37,35 @@ angular.module('ui.router.menu', ["ui.router"])
             }
             //todo wrapper on menu
             return main;
+        }
+
+        function MainSetEvent() {
+            var event = this;
+            event.then = then;
+            event.fire = fire;
+            event.raised = false;
+            event.source = null;
+
+            var listeners = [];
+
+
+            function then(listener) {
+                if (event.raised) {
+                    emit(listener);
+                }
+                listeners.push(listener);
+                return event;
+            }
+
+            function fire() {
+                event.source = Array.prototype.slice.call(arguments);
+
+                listeners.forEach(emit);
+            }
+
+            function emit(listener) {
+                listener.call(listener, event.source);
+            }
+
         }
     }]);

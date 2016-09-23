@@ -23,7 +23,6 @@ gulp.task('clean', function () {
 
 gulp.task("build:dev", function(){
    return gulp.src(conf.jsSrc())
-       .pipe(babel({presets: ['es2015'], plugins:["transform-runtime"]}))
        .pipe(concat(conf.jsDevFile()))
        .pipe(gulp.dest(conf.dest));
 });
