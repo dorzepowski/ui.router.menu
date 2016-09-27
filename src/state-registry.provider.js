@@ -14,6 +14,7 @@ angular.module('ui.router.menu')
 
 
         function prepareOptions(options) {
+            ;
             return angular.merge({}, DEFAULT_OPTIONS, options, {isRoot: true});
         }
 

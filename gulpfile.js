@@ -1,19 +1,4 @@
-var conf = {
-    src: "./src",
-    dest: "./target",
-    release: "./dist",
-    jsSrc : function () {
-        return this.src + "/**/*.js";
-    },
-    jsDest: "ui-router-menu-extension",
-    jsDevFile: function () {
-        return this.jsDest + ".js"
-    },
-    jsProdFile: function () {
-        return this.jsDest + ".min.js"
-    }
-};
-
+const conf = require("./gulp/config");
 const gulp = require("gulp");
 const concat = require("gulp-concat");
 const babel = require('gulp-babel');
@@ -21,8 +6,10 @@ const del = require('del');
 const watch = require('gulp-watch');
 const print = require('gulp-print');
 const strip = require('gulp-strip-comments');
+const ngAnotate = require('gulp-ng-annotate');
 const uglify = require('gulp-uglify');
 const webserver = require('gulp-webserver');
+const karma = require('karma').Server;
 
 gulp.task('clean', function () {
     return del([conf.dest], {dot: true});
@@ -38,6 +25,7 @@ gulp.task("build:dev", function(){
 gulp.task("build:prod", function () {
     return gulp.src(conf.jsSrc())
         .pipe(concat(conf.jsProdFile()))
+        .pipe(ngAnotate())
         .pipe(uglify())
         .pipe(gulp.dest(conf.dest));
 });
@@ -69,4 +57,19 @@ gulp.task('serve', function () {
 });
 
 
-gulp.task("start", ["build:dev", "build:prod", "serve", "watch"]);
+gulp.task("start", ["build", "serve", "watch"]);
+
+
+gulp.task("test", ["build"], function (done) {
+    new karma({
+        configFile: conf.test.karmaConf,
+        singleRun: true
+    }, done).start();
+});
+
+gulp.task('tdd', ["build", "watch"], function (done) {
+    new karma({
+        configFile: conf.test.karmaConf,
+        browsers: ['PhantomJS']
+    }, done).start();
+});
