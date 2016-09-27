@@ -1,5 +1,5 @@
-angular.module('ui.router.menu', ["ui.router"])
-    .provider("routerMenuProvider", [function () {
+angular.module('ui.router.menu')
+    .provider("routerMenu", [function () {
         var mainSetEvent = new MainSetEvent();
         var emitMainRegistered = mainSetEvent.fire;
 

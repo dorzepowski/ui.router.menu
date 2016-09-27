@@ -1,5 +1,5 @@
-angular.module('ui.router.menu', ["ui.router"])
-    .provider("stateRegistry", ["$stateProvider, routerMenuProvider", function ($stateProvider, routerMenuProvider) {
+angular.module('ui.router.menu')
+    .provider("stateRegistry", ["$stateProvider", "routerMenuProvider", function ($stateProvider, routerMenuProvider) {
         var STATE_OPTS = "menu";
 
         var _this = this;
