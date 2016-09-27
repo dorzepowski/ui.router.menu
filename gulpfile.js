@@ -1,6 +1,7 @@
 var conf = {
     src: "./src",
-    dest: "./dist",
+    dest: "./target",
+    release: "./dist",
     jsSrc : function () {
         return this.src + "/**/*.js";
     },
@@ -41,8 +42,14 @@ gulp.task("build:prod", function () {
         .pipe(gulp.dest(conf.dest));
 });
 
+gulp.task("build", ["build:prod", "build:dev"]);
+
+gulp.task("release", ["build"], function () {
+    gulp.src(conf.dest + "/**/*").pipe(gulp.dest(conf.release));
+});
+
 gulp.task("watch", function(){
-    var watcher = gulp.watch(conf.jsSrc(), ["build:dev", "build:prod"]);
+    var watcher = gulp.watch(conf.jsSrc(), ["build"]);
     watcher.on("add", logModified);
     watcher.on("change", logModified);
     watcher.on("delete", logModified);
