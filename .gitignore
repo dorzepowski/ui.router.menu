@@ -1,6 +1,7 @@
 target/
 
 ### Node template
+bower_components/
 # Logs
 logs
 *.log
