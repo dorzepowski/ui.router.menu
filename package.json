@@ -20,6 +20,8 @@
     "gulp-concat": "2.6.0",
     "gulp-print": "2.0.1",
     "gulp-strip-comments": "2.4.3",
-    "gulp-watch": "4.3.9"
+    "gulp-uglify": "2.0.0",
+    "gulp-watch": "4.3.9",
+    "gulp-webserver": "0.9.1"
   }
 }
