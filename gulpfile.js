@@ -32,7 +32,7 @@ gulp.task("build:prod", function () {
 
 gulp.task("build", ["build:prod", "build:dev"]);
 
-gulp.task("release", ["build"], function () {
+gulp.task("release", ["test"], function () {
     gulp.src(conf.dest + "/**/*").pipe(gulp.dest(conf.release));
 });
 
