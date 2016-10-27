@@ -59,12 +59,12 @@ angular.module('ui.router.menu')
 
             function fire() {
                 event.source = Array.prototype.slice.call(arguments);
-
+                event.raised = true;
                 listeners.forEach(emit);
             }
 
             function emit(listener) {
-                listener.call(listener, event.source);
+                listener.apply(listener, event.source);
             }
 
         }

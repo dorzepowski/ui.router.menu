@@ -62,14 +62,30 @@ gulp.task("start", ["build", "serve", "watch"]);
 
 gulp.task("test", ["build"], function (done) {
     new karma({
-        configFile: conf.test.karmaConf,
+        configFile: conf.test.karmaConf("DEV"),
+        browsers: ['PhantomJS'],
+        singleRun: true
+    }, done).start();
+});
+
+gulp.task("test:min", ["build"], function (done) {
+    new karma({
+        configFile: conf.test.karmaConf("PROD"),
+        browsers: ['PhantomJS'],
+        singleRun: true
+    }, done).start();
+});
+
+gulp.task("test:multibrowsers", ["build"], function (done) {
+    new karma({
+        configFile: conf.test.karmaConf("PROD"),
         singleRun: true
     }, done).start();
 });
 
 gulp.task('tdd', ["build", "watch"], function (done) {
     new karma({
-        configFile: conf.test.karmaConf,
+        configFile: conf.test.karmaConf("DEV"),
         browsers: ['PhantomJS']
     }, done).start();
 });

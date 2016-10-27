@@ -13,7 +13,7 @@ module.exports = function (config) {
 
 
         // list of files / patterns to load in the browser
-        files: conf.test.files,
+        files: conf.test.files.dev,
 
 
         // list of files to exclude

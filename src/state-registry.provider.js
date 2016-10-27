@@ -8,13 +8,12 @@ angular.module('ui.router.menu')
 
         function registerState(state, options) {
             var opts = prepareOptions(options);
-            register(state, options);
+            register(state, opts);
             return _this;
         }
 
 
         function prepareOptions(options) {
-            ;
             return angular.merge({}, DEFAULT_OPTIONS, options, {isRoot: true});
         }
 
@@ -41,8 +40,8 @@ angular.module('ui.router.menu')
                 service.attachParent = isChild() ? attachParent : omit;
                 service.registerMain = isMain() ? registerMain : omit;
                 service.prepareStateName = prepareStateName;
-                service.addMainAsParent = addMainAsParent;
-                service.applyMainName = applyMainName;
+                service.addMainAsParent = !isMain() ? addMainAsParent : omit;
+                service.applyMainName = !isMain() ? applyMainName : omit;
                 service.registerState = registerState;
                 service.processChildrens = processChildrens;
                 return service;
@@ -68,6 +67,10 @@ angular.module('ui.router.menu')
                 state.parent = options.parent;
             }
 
+            function isMain() {
+                return stateOpts.mainState;
+            }
+
             function isChild() {
                 return !stateOpts.isRoot;
             }
@@ -85,9 +88,9 @@ angular.module('ui.router.menu')
             function onMainSet(addMainAsParent, applyName, registerState) {
                 routerMenuProvider.whenMainSet().then(handleMainSet);
 
-                function handleMainSet(mainState) {
+                function handleMainSet(mainName, mainState) {
                     addMainAsParent(mainState);
-                    applyName(mainState.name);
+                    applyName(mainName);
                     registerState(state);
                 }
             }
