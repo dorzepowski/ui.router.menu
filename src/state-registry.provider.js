@@ -64,7 +64,7 @@ angular.module('ui.router.menu')
             }
 
             function attachParent() {
-                state.parent = options.parent;
+                state.parent = stateOpts.parent;
             }
 
             function isMain() {
@@ -100,9 +100,13 @@ angular.module('ui.router.menu')
             }
 
             function applyMainName(mainName) {
-                if (!state.name.startsWith(mainName)) {
+                if (!hasMainNameApplied(mainName)) {
                     state.name = mainName + "." + state.name;
                 }
+            }
+
+            function hasMainNameApplied(mainName) {
+                return state.name.indexOf(mainName) == 0;
             }
 
             function registerState() {
@@ -121,7 +125,7 @@ angular.module('ui.router.menu')
             }
 
             function prepareChildOpts() {
-                angular.merge({}, options, createChildrenOptsDefault())
+                return angular.merge({}, options, createChildrenOptsDefault())
             }
 
             function createChildrenOptsDefault() {
