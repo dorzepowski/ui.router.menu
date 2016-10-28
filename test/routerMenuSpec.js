@@ -52,9 +52,9 @@ describe("UI Router Menu:", function () {
                     name: "main",
                     menu: {mainState: true},
                     children: [
-                        {name: "child0"},
-                        {name: "child1"},
-                        {name: "child2"}
+                        {name: "child0", children: [{name: "subchild0"}, {name: "subchild1"}]},
+                        {name: "child1", children: [{name: "subchild0"}, {name: "subchild1"}]},
+                        {name: "child2", children: [{name: "subchild0"}, {name: "subchild1"}]}
                     ]
                 };
                 stateRegistryProvider.state(mainState);
@@ -70,6 +70,16 @@ describe("UI Router Menu:", function () {
                 expect($state.get("main.child0")).toBe(mainState.children[0]);
                 expect($state.get("main.child1")).toBe(mainState.children[1]);
                 expect($state.get("main.child2")).toBe(mainState.children[2]);
+            });
+
+            it("than children of children states should be in $state service", function () {
+                var $state = $injector.get("$state");
+                expect($state.get("main.child0.subchild0")).toBe(mainState.children[0].children[0]);
+                expect($state.get("main.child1.subchild0")).toBe(mainState.children[1].children[0]);
+                expect($state.get("main.child2.subchild0")).toBe(mainState.children[2].children[0]);
+                expect($state.get("main.child0.subchild1")).toBe(mainState.children[0].children[1]);
+                expect($state.get("main.child1.subchild1")).toBe(mainState.children[1].children[1]);
+                expect($state.get("main.child2.subchild1")).toBe(mainState.children[2].children[1]);
             })
         });
 

@@ -40,7 +40,7 @@ angular.module('ui.router.menu')
                 service.attachParent = isChild() ? attachParent : omit;
                 service.registerMain = isMain() ? registerMain : omit;
                 service.prepareStateName = prepareStateName;
-                service.addMainAsParent = !isMain() ? addMainAsParent : omit;
+                service.addMainAsParent = !isMain() && isRoot() ? addMainAsParent : omit;
                 service.applyMainName = !isMain() ? applyMainName : omit;
                 service.registerState = registerState;
                 service.processChildrens = processChildrens;
@@ -60,7 +60,11 @@ angular.module('ui.router.menu')
             }
 
             function prepareStateOptions() {
-                return angular.merge({}, options, state[STATE_OPTS] || {});
+                var parent = options.parent;
+                delete options["parent"];
+                var stateOptions = angular.merge({}, options, state[STATE_OPTS] || {});
+                stateOptions.parent = parent;
+                return stateOptions;
             }
 
             function attachParent() {
@@ -72,9 +76,12 @@ angular.module('ui.router.menu')
             }
 
             function isChild() {
-                return !stateOpts.isRoot;
+                return !isRoot();
             }
 
+            function isRoot() {
+                return stateOpts.isRoot;
+            }
             function registerMain() {
                 routerMenuProvider.setMain(state);
             }
@@ -114,23 +121,23 @@ angular.module('ui.router.menu')
             }
 
             function processChildrens() {
-
                 var children = state.children;
                 if (children && children.length) {
-                    var childOpts = prepareChildOpts();
                     children.forEach(function (childState) {
-                        register(childState, childOpts);
+                        register(childState, prepareChildOpts());
                     });
                 }
             }
 
             function prepareChildOpts() {
-                return angular.merge({}, options, createChildrenOptsDefault())
+                delete options["parent"];
+                var childOpts = angular.merge({}, options, createChildrenOptsDefault());
+                childOpts.parent = state;
+                return childOpts;
             }
 
             function createChildrenOptsDefault() {
                 return {
-                    parent: state,
                     isRoot: false,
                     mainState: false
                 };
