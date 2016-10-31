@@ -102,26 +102,56 @@ describe("UI Router Menu:", function () {
                         {name: "child2"}
                     ]
                 };
-
+                stateRegistryProvider.state(mainState);
+                stateRegistryProvider.state(rootState);
                 $state = $injector.get("$state");
             });
 
 
             it("should the root state be in $state service as main.root", function () {
-                stateRegistryProvider.state(mainState);
-                stateRegistryProvider.state(rootState);
-
                 expect($state.get("main.root")).toBe(rootState);
             });
 
             it("should the children state of root state be in $state service", function () {
-                stateRegistryProvider.state(mainState);
-                stateRegistryProvider.state(rootState);
-
                 expect($state.get("main.root.child0")).toBe(rootState.children[0]);
                 expect($state.get("main.root.child1")).toBe(rootState.children[1]);
                 expect($state.get("main.root.child2")).toBe(rootState.children[2]);
             })
         })
-    })
+    });
+
+    describe("registering states before main state", function () {
+        var mainState;
+        var rootState;
+        var $state;
+
+        beforeEach(function () {
+            mainState = {
+                name: "main",
+                menu: {mainState: true}
+            };
+
+            rootState = {
+                name: "some",
+                children: [
+                    {name: "child0"},
+                    {name: "child1"},
+                    {name: "child2"}
+                ]
+            };
+            $state = $injector.get("$state");
+            stateRegistryProvider.state(rootState);
+            stateRegistryProvider.state(mainState);
+        });
+
+        it("should 'some' state be registered as child of main state", function () {
+            expect($state.get("main.some")).toBe(rootState);
+        });
+
+        it("should the children state of 'some' state be registered as descendant of main state", function () {
+            expect($state.get("main.some.child0")).toBe(rootState.children[0]);
+            expect($state.get("main.some.child1")).toBe(rootState.children[1]);
+            expect($state.get("main.some.child2")).toBe(rootState.children[2]);
+        })
+    });
 });
