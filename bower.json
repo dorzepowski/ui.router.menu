@@ -1,7 +1,12 @@
 {
   "name": "ui.router.menu",
   "description": "Extension to ui.router to help prepare menu from states",
-  "main": "dist/ui-router-menu.min.js",
+  "main": "dist/ui-router-menu.js",
+  "homepage": "https://github.com/dorzepowski/ui.router.menu",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dorzepowski/ui.router.menu.git"
+  },
   "authors": [
     "Damian Orzepowski <info@softwarelab.com.pl>"
   ],
@@ -18,9 +23,7 @@
     "menu",
     "ui"
   ],
-  "homepage": "",
   "ignore": [
-    "**/.*",
     "node_modules",
     "bower_components",
     "package.json",
