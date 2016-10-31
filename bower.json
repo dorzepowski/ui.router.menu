@@ -1,0 +1,44 @@
+{
+  "name": "ui.router.menu",
+  "description": "Extension to ui.router to help prepare menu from states",
+  "main": "dist/ui-router-menu.js",
+  "homepage": "https://github.com/dorzepowski/ui.router.menu",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dorzepowski/ui.router.menu.git"
+  },
+  "authors": [
+    "Damian Orzepowski <info@softwarelab.com.pl>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "ui.router",
+    "ui-router",
+    "menu",
+    "state",
+    "$state",
+    "state-menu",
+    "$state",
+    "menu",
+    "ui"
+  ],
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "package.json",
+    "gulpfile.js",
+    "bower_components",
+    "test",
+    "tests",
+    "gulp",
+    "src"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-ui-router": "^0.3.1"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.5.8"
+  }
+}
