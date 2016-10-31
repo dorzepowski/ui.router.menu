@@ -1,6 +1,5 @@
 {
-  "name": "ui-router-menu-extension",
-  "version": "0.0.1",
+  "name": "ui.router.menu",
   "description": "Extension to ui.router to help prepare menu from states",
   "scripts": {
     "test": "gulp test"
@@ -18,8 +17,9 @@
     "del": "2.2.2",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.0",
-    "gulp-ng-annotate": "^2.0.0",
+    "gulp-ng-annotate": "2.0.0",
     "gulp-print": "2.0.1",
+    "gulp-sourcemaps": "2.2.0",
     "gulp-strip-comments": "2.4.3",
     "gulp-uglify": "2.0.0",
     "gulp-watch": "4.3.9",

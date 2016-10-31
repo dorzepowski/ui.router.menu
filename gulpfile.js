@@ -8,6 +8,7 @@ const print = require('gulp-print');
 const strip = require('gulp-strip-comments');
 const ngAnotate = require('gulp-ng-annotate');
 const uglify = require('gulp-uglify');
+const sourcemaps = require('gulp-sourcemaps');
 const webserver = require('gulp-webserver');
 const karma = require('karma').Server;
 
@@ -24,15 +25,17 @@ gulp.task("build:dev", function(){
 
 gulp.task("build:prod", function () {
     return gulp.src(conf.jsSrc())
+        .pipe(sourcemaps.init())
         .pipe(concat(conf.jsProdFile()))
         .pipe(ngAnotate())
         .pipe(uglify())
+        .pipe(sourcemaps.write("./"))
         .pipe(gulp.dest(conf.dest));
 });
 
 gulp.task("build", ["build:prod", "build:dev"]);
 
-gulp.task("release", ["test"], function () {
+gulp.task("release", ["test:release"], function () {
     gulp.src(conf.dest + "/**/*").pipe(gulp.dest(conf.release));
 });
 
@@ -76,7 +79,7 @@ gulp.task("test:min", ["build"], function (done) {
     }, done).start();
 });
 
-gulp.task("test:multibrowsers", ["build"], function (done) {
+gulp.task("test:release", ["build"], function (done) {
     new karma({
         configFile: conf.test.karmaConf("PROD"),
         singleRun: true
