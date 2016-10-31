@@ -46,6 +46,7 @@ describe("UI Router Menu:", function () {
 
         describe("in main state", function () {
             var mainState;
+            var $state;
 
             beforeEach(function () {
                 mainState = {
@@ -58,22 +59,20 @@ describe("UI Router Menu:", function () {
                     ]
                 };
                 stateRegistryProvider.state(mainState);
+                $state = $injector.get("$state");
             });
 
-            it("than main state should be in $state service", function () {
-                var $state = $injector.get("$state");
+            it("should main state be in $state service", function () {
                 expect($state.get("main")).toBe(mainState);
             });
 
-            it("than children states should be in $state service", function () {
-                var $state = $injector.get("$state");
+            it("should children states be in $state service", function () {
                 expect($state.get("main.child0")).toBe(mainState.children[0]);
                 expect($state.get("main.child1")).toBe(mainState.children[1]);
                 expect($state.get("main.child2")).toBe(mainState.children[2]);
             });
 
-            it("than children of children states should be in $state service", function () {
-                var $state = $injector.get("$state");
+            it("should children of children states be in $state service", function () {
                 expect($state.get("main.child0.subchild0")).toBe(mainState.children[0].children[0]);
                 expect($state.get("main.child1.subchild0")).toBe(mainState.children[1].children[0]);
                 expect($state.get("main.child2.subchild0")).toBe(mainState.children[2].children[0]);
@@ -84,6 +83,45 @@ describe("UI Router Menu:", function () {
         });
 
 
-        //describe("in root state ")
+        describe("in root state ", function () {
+            var mainState;
+            var rootState;
+            var $state;
+
+            beforeEach(function () {
+                mainState = {
+                    name: "main",
+                    menu: {mainState: true}
+                };
+
+                rootState = {
+                    name: "root",
+                    children: [
+                        {name: "child0"},
+                        {name: "child1"},
+                        {name: "child2"}
+                    ]
+                };
+
+                $state = $injector.get("$state");
+            });
+
+
+            it("should the root state be in $state service as main.root", function () {
+                stateRegistryProvider.state(mainState);
+                stateRegistryProvider.state(rootState);
+
+                expect($state.get("main.root")).toBe(rootState);
+            });
+
+            it("should the children state of root state be in $state service", function () {
+                stateRegistryProvider.state(mainState);
+                stateRegistryProvider.state(rootState);
+
+                expect($state.get("main.root.child0")).toBe(rootState.children[0]);
+                expect($state.get("main.root.child1")).toBe(rootState.children[1]);
+                expect($state.get("main.root.child2")).toBe(rootState.children[2]);
+            })
+        })
     })
 });
