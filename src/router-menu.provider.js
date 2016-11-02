@@ -33,10 +33,9 @@ angular.module('ui.router.menu')
 
         function createMenu() {
             if (!main) {
-                throw "Main state already not registered. One there should be; no more, no less.";
+                throw "Main state not registered. One there should be; no more, no less.";
             }
-            //todo wrapper on menu
-            return main;
+            return new MenuService(main);
         }
 
         function MainSetEvent() {
@@ -68,4 +67,55 @@ angular.module('ui.router.menu')
             }
 
         }
+
+        function MenuService(mainState) {
+            var menuCache = {initialized: false};
+            var $this = this;
+            Object.defineProperty($this, "items", {
+                get: function () {
+                    if (!menuCache.initialized) {
+                        menuCache.items = createMenuItems(mainState);
+                    }
+                    return menuCache.items;
+                }
+            });
+
+            function createMenuItems(state) {
+                var items = state.children ? state.children : [];
+                return items.map(setupIsItem).map(createItem).filter(nonEmpty);
+            }
+
+            function setupIsItem(state) {
+                if (!state.menu) {
+                    state.menu = {};
+                }
+                if (state.menu.isItem === undefined) {
+                    state.menu.isItem = !state.abstract;
+                }
+                return state;
+            }
+
+            function createItem(state) {
+                function isSuitableForMenuItem() {
+                    return state.menu.isItem;
+                }
+
+                return isSuitableForMenuItem() ? new MenuItem(state) : undefined;
+            }
+
+            function nonEmpty(obj) {
+                return obj != null;
+            }
+        }
+
+        function MenuItem(state) {
+            var $this = this;
+            Object.defineProperty($this, "name", {get: getName});
+
+
+            function getName() {
+                return state.name;
+            }
+        }
+
     }]);
