@@ -76,7 +76,10 @@ describe("Router Menu service: Menu Items", function () {
                     {
                         name: "child",
                         children: [
-                            {name: "sub-menu"}
+                            {name: "sub-menu"},
+                            {name: "abstract-sub", abstract: true},
+                            {name: "abstract-sub-menu", abstract: true, menu: {isItem: true}},
+                            {name: "sub-non-menu", menu: {isItem: false}}
                         ]
                     }
                 ]
@@ -87,6 +90,18 @@ describe("Router Menu service: Menu Items", function () {
 
         it("should contain item for sub menu", function () {
             expect(namesOf(routerMenu.items[0].children)).toContain("main.child.sub-menu");
+        });
+
+        it("should not contain item for abstract subchild", function () {
+            expect(namesOf(routerMenu.items[0].children)).not.toContain("main.child.abstract-sub");
+        });
+
+        it("should contain item for abstract sub menu when forcing to be menu item", function () {
+            expect(namesOf(routerMenu.items[0].children)).toContain("main.child.abstract-sub-menu");
+        });
+
+        it("should not contain item for sub menu when forcing to NOT be menu item", function () {
+            expect(namesOf(routerMenu.items[0].children)).not.toContain("main.child.sub-non-menu");
         });
     });
 

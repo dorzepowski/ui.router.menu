@@ -69,49 +69,49 @@ angular.module('ui.router.menu')
         }
 
         function MenuService(state) {
-            var menuCache = {initialized: false};
             var $this = this;
-            var provider = initProvider();
+            var provider = new CachedMenuProvider(state);
             Object.defineProperty($this, "items", {get: provider.get});
-
-            function initProvider() {
-                return new MenuFactory(getChildren());
-            }
-
-            function getChildren() {
-                return state.children ? state.children : [];
-            }
         }
 
         function MenuItem(state) {
+            var provider = new CachedMenuProvider(state);
             var $this = this;
             Object.defineProperty($this, "name", {get: getName});
-
+            Object.defineProperty($this, "children", {get: provider.get});
 
             function getName() {
                 return state.name;
             }
 
-            function getChildren() {
-
-            }
         }
 
-        function MenuFactory(states) {
+        function CachedMenuProvider(state) {
             var cache = [];
             var initialized = false;
+            var factory = new MenuFactory(children());
             var $this = this;
             $this.get = getItems;
 
+
             function getItems() {
                 if (!initialized) {
-                    cache = createMenuItems(states);
+                    cache = factory.get();
                     initialized = true;
                 }
                 return cache;
             }
 
-            function createMenuItems(states) {
+            function children() {
+                return state.children ? state.children : [];
+            }
+        }
+
+        function MenuFactory(states) {
+            var $this = this;
+            $this.get = createMenuItems;
+
+            function createMenuItems() {
                 return states.map(setupIsItem).map(createItem).filter(nonEmpty);
             }
 
@@ -137,7 +137,5 @@ angular.module('ui.router.menu')
                 return obj != null;
             }
         }
-
-
 
     }]);
