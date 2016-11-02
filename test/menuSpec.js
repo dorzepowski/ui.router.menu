@@ -5,7 +5,6 @@ describe("Router Menu service: Menu Items", function () {
 
     beforeEach(module('ui.router.menu', function (_stateRegistryProvider_) {
         stateRegistryProvider = _stateRegistryProvider_;
-
     }));
 
     beforeEach(inject(function (_$injector_) {
@@ -61,6 +60,33 @@ describe("Router Menu service: Menu Items", function () {
 
         it("should not contain item for state when forcing to not be menu item", function () {
             expect(namesOf(routerMenu.items)).not.toContain("main.non-menu-child");
+        });
+    });
+
+
+    describe("children of menu items", function () {
+        beforeEach(function () {
+            var states = {
+                name: "main",
+                abstract: true,
+                menu: {
+                    mainState: true
+                },
+                children: [
+                    {
+                        name: "child",
+                        children: [
+                            {name: "sub-menu"}
+                        ]
+                    }
+                ]
+            };
+            stateRegistryProvider.state(states);
+            routerMenu = $injector.get("routerMenu");
+        });
+
+        it("should contain item for sub menu", function () {
+            expect(namesOf(routerMenu.items[0].children)).toContain("main.child.sub-menu");
         });
     });
 

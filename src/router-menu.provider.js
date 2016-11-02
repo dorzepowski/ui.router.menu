@@ -68,21 +68,51 @@ angular.module('ui.router.menu')
 
         }
 
-        function MenuService(mainState) {
+        function MenuService(state) {
             var menuCache = {initialized: false};
             var $this = this;
-            Object.defineProperty($this, "items", {
-                get: function () {
-                    if (!menuCache.initialized) {
-                        menuCache.items = createMenuItems(mainState);
-                    }
-                    return menuCache.items;
-                }
-            });
+            var provider = initProvider();
+            Object.defineProperty($this, "items", {get: provider.get});
 
-            function createMenuItems(state) {
-                var items = state.children ? state.children : [];
-                return items.map(setupIsItem).map(createItem).filter(nonEmpty);
+            function initProvider() {
+                return new MenuFactory(getChildren());
+            }
+
+            function getChildren() {
+                return state.children ? state.children : [];
+            }
+        }
+
+        function MenuItem(state) {
+            var $this = this;
+            Object.defineProperty($this, "name", {get: getName});
+
+
+            function getName() {
+                return state.name;
+            }
+
+            function getChildren() {
+
+            }
+        }
+
+        function MenuFactory(states) {
+            var cache = [];
+            var initialized = false;
+            var $this = this;
+            $this.get = getItems;
+
+            function getItems() {
+                if (!initialized) {
+                    cache = createMenuItems(states);
+                    initialized = true;
+                }
+                return cache;
+            }
+
+            function createMenuItems(states) {
+                return states.map(setupIsItem).map(createItem).filter(nonEmpty);
             }
 
             function setupIsItem(state) {
@@ -95,12 +125,12 @@ angular.module('ui.router.menu')
                 return state;
             }
 
-            function createItem(state) {
-                function isSuitableForMenuItem() {
-                    return state.menu.isItem;
-                }
+            function isSuitableForMenuItem(state) {
+                return state.menu.isItem;
+            }
 
-                return isSuitableForMenuItem() ? new MenuItem(state) : undefined;
+            function createItem(state) {
+                return isSuitableForMenuItem(state) ? new MenuItem(state) : undefined;
             }
 
             function nonEmpty(obj) {
@@ -108,14 +138,6 @@ angular.module('ui.router.menu')
             }
         }
 
-        function MenuItem(state) {
-            var $this = this;
-            Object.defineProperty($this, "name", {get: getName});
 
-
-            function getName() {
-                return state.name;
-            }
-        }
 
     }]);
