@@ -33,10 +33,9 @@ angular.module('ui.router.menu')
 
         function createMenu() {
             if (!main) {
-                throw "Main state already not registered. One there should be; no more, no less.";
+                throw "Main state not registered. One there should be; no more, no less.";
             }
-            //todo wrapper on menu
-            return main;
+            return new MenuService(main);
         }
 
         function MainSetEvent() {
@@ -68,4 +67,75 @@ angular.module('ui.router.menu')
             }
 
         }
+
+        function MenuService(state) {
+            var $this = this;
+            var provider = new CachedMenuProvider(state);
+            Object.defineProperty($this, "items", {get: provider.get});
+        }
+
+        function MenuItem(state) {
+            var provider = new CachedMenuProvider(state);
+            var $this = this;
+            Object.defineProperty($this, "name", {get: getName});
+            Object.defineProperty($this, "children", {get: provider.get});
+
+            function getName() {
+                return state.name;
+            }
+
+        }
+
+        function CachedMenuProvider(state) {
+            var cache = [];
+            var initialized = false;
+            var factory = new MenuFactory(children());
+            var $this = this;
+            $this.get = getItems;
+
+
+            function getItems() {
+                if (!initialized) {
+                    cache = factory.get();
+                    initialized = true;
+                }
+                return cache;
+            }
+
+            function children() {
+                return state.children ? state.children : [];
+            }
+        }
+
+        function MenuFactory(states) {
+            var $this = this;
+            $this.get = createMenuItems;
+
+            function createMenuItems() {
+                return states.map(setupIsItem).map(createItem).filter(nonEmpty);
+            }
+
+            function setupIsItem(state) {
+                if (!state.menu) {
+                    state.menu = {};
+                }
+                if (state.menu.isItem === undefined) {
+                    state.menu.isItem = !state.abstract;
+                }
+                return state;
+            }
+
+            function isSuitableForMenuItem(state) {
+                return state.menu.isItem;
+            }
+
+            function createItem(state) {
+                return isSuitableForMenuItem(state) ? new MenuItem(state) : undefined;
+            }
+
+            function nonEmpty(obj) {
+                return obj != null;
+            }
+        }
+
     }]);
