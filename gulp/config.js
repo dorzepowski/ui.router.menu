@@ -41,21 +41,16 @@ conf.test.karmaConf = function (profile) {
 module.exports = conf;
 
 function testFilesList(profile) {
-    return [
+    var fileList = [
         "../" + conf.bower + '/angular/angular.js',
         "../" + conf.bower + '/angular-mocks/angular-mocks.js',
         "../" + conf.bower + '/angular-ui-router/release/angular-ui-router.js',
-        "../" + conf.dest + "/" + destFileForProfile(profile),
         "../" + conf.test.path + '/**/*.js'
-    ]
-}
-
-function destFileForProfile(profile) {
+    ];
     if (profile == PROFILE_PROD) {
-        return conf.jsProdFile()
-    } else if (profile == PROFILE_DEV) {
-        return conf.jsDevFile()
+        fileList.push("../" + conf.dest + "/" + conf.jsProdFile())
     } else {
-        throw "Unsupported profile " + profile;
+        fileList.push("../" + conf.src + '/**/*.js');
     }
+    return fileList;
 }
