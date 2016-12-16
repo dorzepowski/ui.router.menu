@@ -7,3 +7,5 @@ gulpfile.js
 /src/
 /target/
 *.iml
+.npmignore
+.idea/
