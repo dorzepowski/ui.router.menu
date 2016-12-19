@@ -1,7 +1,6 @@
 const conf = require("./gulp/config");
 const gulp = require("gulp");
 const concat = require("gulp-concat");
-const babel = require('gulp-babel');
 const del = require('del');
 const watch = require('gulp-watch');
 const print = require('gulp-print');

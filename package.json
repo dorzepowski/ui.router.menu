@@ -12,6 +12,12 @@
     "state",
     "$state"
   ],
+  "contributors": [
+    {
+      "name": "Anton Temchenko",
+      "url": "http://anton.temchenko.com.ua"
+    }
+  ],
   "author": {
     "name": "Damian Orzepowski",
     "email": "info@softwarelab.com.pl"
