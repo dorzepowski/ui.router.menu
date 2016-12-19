@@ -1,5 +1,6 @@
 {
   "name": "ui.router.menu",
+  "version": "0.1.1",
   "description": "Extension to ui.router to help prepare menu from states",
   "scripts": {
     "test": "gulp test"
@@ -11,7 +12,11 @@
     "state",
     "$state"
   ],
-  "author": "Damian Orzepowski",
+  "author": {
+    "name": "Damian Orzepowski",
+    "email": "info@softwarelab.com.pl"
+  },
+  "main": "dist/ui-router-menu.js",
   "license": "MIT",
   "devDependencies": {
     "del": "2.2.2",
@@ -31,5 +36,9 @@
     "karma-ie-launcher": "1.0.0",
     "karma-jasmine": "1.0.2",
     "karma-phantomjs-launcher": "1.0.2"
+  },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-ui-router": "^0.3.1"
   }
 }

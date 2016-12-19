@@ -1,5 +1,5 @@
-describe("UI Router Menu:", function () {
-    var stateRegistryProvider, $stateProvider, rootState, expectedState;
+describe("UI router integration:", function () {
+    var stateRegistryProvider, $stateProvider;
 
     var $injector;
 
