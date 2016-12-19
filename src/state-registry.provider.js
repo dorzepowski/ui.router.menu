@@ -104,6 +104,8 @@ angular.module('ui.router.menu')
 
             function addMainAsParent(main) {
                 state.parent = main;
+                main.children = main.children || [];
+                main.children.push(state);
             }
 
             function applyMainName(mainName) {
